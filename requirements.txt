@@ -1,0 +1,12 @@
+streamlit
+langchain_core
+langchain_groq
+os
+time
+typing
+typing_extensions
+langgraph
+dotenv
+langchain_community
+langchain_ollama
+cassio
