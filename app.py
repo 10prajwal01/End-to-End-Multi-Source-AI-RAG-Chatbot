@@ -41,13 +41,13 @@ class RouteQuery(BaseModel):
 
     datasource: Literal["vectorstore", "wiki_search", "arxiv_search"] = Field(
         ...,
-        description="Given a user question choose to route it to wikipedia or a vectorstore.",
+        description="Given a user question choose to route it to wikipedia or arxiv or a vectorstore.",
     )
 
 structured_llm_router = llm.with_structured_output(RouteQuery)
 
 # Prompt
-system = """You are an expert at routing a user question to a vectorstore or wikipedia.
+system = """You are an expert at routing a user question to a vectorstore or wikipedia or arxiv.
 The vectorstore contains documents related to agents, prompt engineering, and adversarial attacks.
 Use the vectorstore for questions on these topics. Otherwise, use wiki-search or arxiv_search."""
 route_prompt = ChatPromptTemplate.from_messages(
