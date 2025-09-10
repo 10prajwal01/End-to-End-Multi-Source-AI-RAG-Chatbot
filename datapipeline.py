@@ -8,6 +8,7 @@ from langchain_ollama import OllamaEmbeddings
 from langchain.vectorstores.cassandra import Cassandra
 from langchain.indexes.vectorstore import VectorStoreIndexWrapper
 from langchain_core.runnables import RunnableLambda
+from urls import urls
 import cassio
 
 
@@ -20,6 +21,7 @@ if "retriever" not in st.session_state:
     st.session_state.retriever = None
 
 def create_vector_embedding():
+    global urls
     if "vectors" not in st.session_state:
         # Embeddings
         st.session_state.embeddings = OllamaEmbeddings(
@@ -27,54 +29,7 @@ def create_vector_embedding():
         )
 
         # Data ingestion from web URLs
-        urls = [
-            "https://scikit-learn.org/stable/documentation.html",
-            "https://pytorch.org/docs/stable/index.html",
-            "https://pytorch.org/tutorials/",
-            "https://www.tensorflow.org/learn",
-            "https://www.tensorflow.org/api_docs",
-            "https://keras.io/",
-            "https://docs.fast.ai/",
-            "https://mxnet.apache.org/versions/1.9.1/api/python/docs/tutorials/index.html",
-            "https://onnx.ai/",
-            "https://lightgbm.readthedocs.io/en/stable/",
-            "https://xgboost.readthedocs.io/en/stable/",
-            "https://catboost.ai/en/docs/",
-            "https://optuna.readthedocs.io/en/stable/",
-            "https://ray.io/docs/",
-            "https://docs.ray.io/en/latest/tune/index.html",
-            "https://mlflow.org/docs/latest/index.html",
-            "https://docs.wandb.ai/",
-            "https://hydra.cc/docs/intro/",
-            "https://cleverhans.readthedocs.io/en/latest/",
-            "https://spacy.io/usage",
-            "https://lilianweng.github.io/posts/2023-06-23-agent/",
-            "https://lilianweng.github.io/posts/2023-03-15-prompt-engineering/",
-            "https://lilianweng.github.io/posts/2023-10-25-adv-attack-llm/",
-            "https://huggingface.co/docs/transformers/index",
-            "https://huggingface.co/docs/datasets/index",
-            "https://huggingface.co/docs/tokenizers/index",
-            "https://huggingface.co/docs/evaluate/index",
-            "https://huggingface.co/docs/accelerate/index",
-            "https://huggingface.co/docs/trl/index",
-            "https://huggingface.co/docs/peft/index",
-            "https://huggingface.co/docs/autotrain/index",
-            "https://docs.scipy.org/doc/numpy/",
-            "https://pandas.pydata.org/docs/",
-            "https://matplotlib.org/stable/contents.html",
-            "https://seaborn.pydata.org/",
-            "https://bokeh.org/docs/",
-            "https://plotly.com/python/",
-            "https://cloud.google.com/vertex-ai/docs",
-            "https://azure.microsoft.com/en-us/products/ai-services/",
-            "https://learn.microsoft.com/en-us/azure/machine-learning/",
-            "https://aws.amazon.com/sagemaker/",
-            "https://aws.amazon.com/machine-learning/",
-            "https://docs.oracle.com/en-us/iaas/Content/ai-ml/",
-            "https://lilianweng.github.io/posts/2023-06-23-agent/",
-            "https://lilianweng.github.io/posts/2023-03-15-prompt-engineering/",
-            "https://lilianweng.github.io/posts/2023-10-25-adv-attack-llm/"
-        ]
+        urls = urls
         st.session_state.loader = [WebBaseLoader(url).load() for url in urls]
         st.session_state.docs = [item for sublist in st.session_state.loader for item in sublist]  
 
