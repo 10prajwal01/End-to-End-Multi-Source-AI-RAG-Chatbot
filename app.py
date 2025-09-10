@@ -105,24 +105,28 @@ workflow.add_edge("arxiv_search", END)
 app = workflow.compile()
 
 if user_prompt:
-    start = time.process_time()
+    try:
+        start = time.process_time()
 
-    inputs = {"question": user_prompt}
-    final_documents = None
+        inputs = {"question": user_prompt}
+        final_documents = None
 
-    for output in app.stream(inputs):
-        for key, value in output.items():
-            st.write(f"🔹 Node `{key}` processed")
-            final_documents = value.get("documents", None)
-            if value.get("documents"):
-                if key == "retrieve":
-                    st.write("Fetching from Vector Store DB")
-                    st.write("Output:")
-                    st.write(value["documents"][0].dict()["metadata"]["description"])
-                else:
-                    st.write("✅ Output:")
-                    st.write(value["documents"].dict()["page_content"])
+        for output in app.stream(inputs):
+            for key, value in output.items():
+                st.write(f"🔹 Node `{key}` processed")
+                final_documents = value.get("documents", None)
+                if value.get("documents"):
+                    if key == "retrieve":
+                        st.write("Fetching from Vector Store DB")
+                        st.write("Output:")
+                        st.write(value["documents"][0].dict()["metadata"]["description"])
+                    else:
+                        st.write("✅ Output:")
+                        st.write(value["documents"].dict()["page_content"])
 
-    st.write("⏱️ Response time:", time.process_time() - start)
+        st.write("⏱️ Response time:", time.process_time() - start)
+    
+    except Exception as e:
+        raise RuntimeError(f"Generation failed: {e}")
 
 
