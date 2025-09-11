@@ -118,7 +118,7 @@ if user_prompt:
                 if value.get("documents"):
                     if key == "retrieve":
                         st.write("Fetching from Vector Store DB")
-                        st.write("Output:")
+                        st.write("✅ Output:")
                         st.write(value["documents"][0].dict()["metadata"]["description"])
                     else:
                         st.write("✅ Output:")
